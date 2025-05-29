@@ -252,3 +252,19 @@ class Headphones(models.Model):
     warranty_period = models.IntegerField(help_text="month")
     connector = models.CharField(max_length=99)
     type = models.CharField(max_length=99, help_text="Headphones/speaker/microphone")
+
+
+class Products(models.Model):
+    processors = models.ForeignKey(Processor, on_delete=models.CASCADE)
+    graphic_cards = models.ForeignKey(GraphicCard, on_delete=models.CASCADE)
+    motherboards = models.ForeignKey(Motherboard, on_delete=models.CASCADE)
+    RAM = models.ForeignKey(RAM, on_delete=models.CASCADE)
+    discs = models.ForeignKey(Disc, on_delete=models.CASCADE)
+    coolers = models.ForeignKey(Cooler, on_delete=models.CASCADE)
+    cases = models.ForeignKey(Case, on_delete=models.CASCADE)
+    power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE)
+    fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
+    monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE)
+    keyboard = models.ForeignKey(Keyboard, on_delete=models.CASCADE)
+    mouse = models.ForeignKey(Mouse, on_delete=models.CASCADE)
+    headphones = models.ForeignKey(Headphones, on_delete=models.CASCADE)
