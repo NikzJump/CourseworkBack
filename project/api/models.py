@@ -12,12 +12,12 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, username, email=None, password=None, **extra_fields):
+    def create_user(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
-        return self._create_user(username, email, password, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, username, email=None, password=None, **extra_fields):
+    def create_superuser(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -26,19 +26,19 @@ class UserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(username, email, password, **extra_fields)
+        return self._create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    name = models.CharField(max_length=99)
-    email = models.EmailField(blank=True)
+    nik = models.CharField(max_length=99)
+    email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["name"]
+    REQUIRED_FIELDS = ["nik"]
 
 
 class Processor(models.Model):
@@ -128,13 +128,13 @@ class Disc(models.Model):
     warranty_period = models.IntegerField(help_text="month")
 
 
-class Cooler(models):
+class Cooler(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
     origin_country = models.CharField(max_length=99)
     power_dissipation = models.IntegerField()
     diameter = models.FloatField()
-    sockets = models.CharField(499)
+    sockets = models.CharField(max_length=499)
     height = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
 
@@ -148,7 +148,7 @@ class Case(models.Model):
     length = models.IntegerField()
     max_cooler_height = models.IntegerField()
     window_material = models.CharField(max_length=49)
-    compatible_form_factors = models.CharField(99)
+    compatible_form_factors = models.CharField(max_length=99)
     form_factor = models.CharField(max_length=49)
     side_fan_support = models.CharField(max_length=99)
     front_panel_interfaces = models.CharField(max_length=199)
@@ -181,7 +181,7 @@ class Fan(models.Model):
     description = models.CharField(max_length=4999)
     origin_country = models.CharField(max_length=99)
     size = models.CharField(max_length=19, help_text="00x00mm")
-    power_connector_type = models.CharField("4 pin Male / 4 pin Female")
+    power_connector_type = models.BooleanField(help_text="4 pin Male / 4 pin Female")
     max_rotation_speed = models.IntegerField(help_text="RPM")
     total_voltage = models.IntegerField()
     max_current = models.FloatField(help_text="mA")
