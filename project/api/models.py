@@ -44,6 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Processor(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     frequency = models.FloatField()
     frequency_turbo = models.FloatField()
     socket = models.CharField(max_length=19)
@@ -61,11 +62,13 @@ class Processor(models.Model):
     graphic_core = models.BooleanField()
     graphic_core_name = models.CharField(max_length=99)
     pcie_version = models.FloatField()
+    warranty_period = models.IntegerField(help_text="month")
 
 
 class Motherboard(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     socket = models.CharField(max_length=19)
     chipset = models.CharField(max_length=19)
     memory_type = models.CharField(max_length=5)
@@ -76,21 +79,25 @@ class Motherboard(models.Model):
     form_factor = models.CharField(max_length=19)
     wifi = models.BooleanField()
     pcie_lines = models.IntegerField()
+    warranty_period = models.IntegerField(help_text="month")
 
 
 class RAM(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     memory_type = models.CharField(max_length=5)
     frequency = models.FloatField()
     xmp = models.BooleanField()
     volume = models.IntegerField()
     supply_voltage = models.FloatField()
+    warranty_period = models.IntegerField(help_text="month")
 
 
-class VideoCard(models.Model):
+class GraphicCard(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     chip_name = models.CharField(max_length=99)
     memory_type = models.CharField(max_length=5)
     architecture = models.CharField(max_length=99)
@@ -106,20 +113,142 @@ class VideoCard(models.Model):
     add_power_connector = models.IntegerField(help_text="pin")
     num_lines_pcie = models.IntegerField()
     max_memory_bandwidth = models.FloatField(help_text="Gb/s")
+    warranty_period = models.IntegerField(help_text="month")
 
 
 class Disc(models.Model):
     title = models.CharField(max_length=999)
     description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     disc_type = models.CharField(max_length=3)
     interface = models.CharField(max_length=9)
     volume = models.IntegerField()
     read_speed = models.IntegerField()
     write_speed = models.IntegerField()
+    warranty_period = models.IntegerField(help_text="month")
 
 
 class Cooler(models):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
     power_dissipation = models.IntegerField()
     diameter = models.FloatField()
     sockets = models.CharField(499)
     height = models.IntegerField()
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Case(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
+    height = models.IntegerField()
+    width = models.IntegerField()
+    length = models.IntegerField()
+    max_cooler_height = models.IntegerField()
+    window_material = models.CharField(max_length=49)
+    compatible_form_factors = models.CharField(99)
+    form_factor = models.CharField(max_length=49)
+    side_fan_support = models.CharField(max_length=99)
+    front_panel_interfaces = models.CharField(max_length=199)
+    possibility_install_LCS = models.BooleanField()
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class PowerUnit(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
+    form_factor = models.CharField(max_length=19)
+    certificate_80plus = models.CharField(max_length=49)
+    input_voltage_range = models.CharField(max_length=49, help_text="+ frequency of alternating current")
+    total_power = models.IntegerField(help_text="W")
+    power_12th_volt_line = models.IntegerField(help_text="W")
+    current_12th_volt_line = models.IntegerField(help_text="А")
+    num_processor_power_cables = models.IntegerField(help_text="4 pin or 4+4 pin")
+    num_graphic_card_power_cables = models.IntegerField(help_text="6+2 pin")
+    num_sata_connectors = models.IntegerField()
+    num_molex_connectors = models.IntegerField()
+    pcie_cable_length = models.IntegerField()
+    sata_cable_length = models.IntegerField()
+    molex_cable_length = models.IntegerField()
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Fan(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
+    size = models.CharField(max_length=19, help_text="00x00mm")
+    power_connector_type = models.CharField("4 pin Male / 4 pin Female")
+    max_rotation_speed = models.IntegerField(help_text="RPM")
+    total_voltage = models.IntegerField()
+    max_current = models.FloatField(help_text="mA")
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Monitor(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
+    aspect_ratio = models.CharField(max_length=19, help_text="16/9")
+    screen_coverage = models.CharField(max_length=19, help_text="matte")
+    resolution = models.CharField(max_length=19, help_text="1920x1080")
+    contrast = models.CharField(max_length=19, help_text="1000:1")
+    matrix_type = models.CharField(max_length=19)
+    matrix_illumination_type = models.CharField(max_length=19)
+    input_voltage_range = models.CharField(max_length=49, help_text="+ frequency of alternating current")
+    hdr = models.BooleanField()
+    vertical_viewing_angle = models.IntegerField(help_text="º")
+    horizontal_viewing_angle = models.IntegerField(help_text="º")
+    refresh_rate = models.IntegerField(help_text="Hz")
+    size = models.FloatField(help_text="inch")
+    ppi = models.IntegerField()
+    hdmi_connector = models.BooleanField()
+    displayport_connector = models.BooleanField()
+    speakers = models.BooleanField()
+    response_time = models.IntegerField()
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Keyboard(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    origin_country = models.CharField(max_length=99)
+    layout_language = models.CharField(max_length=99)
+    type = models.CharField(max_length=19)
+    body_material = models.CharField(max_length=19)
+    connect_type = models.CharField(max_length=19)
+    form_factor = models.CharField(max_length=19, help_text="70%")
+    connect_interface = models.CharField(max_length=19)
+    cable_length = models.IntegerField(help_text="m")
+    total_num_keys = models.IntegerField()
+    weight = models.IntegerField(help_text="mm")
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Mouse(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    connect_type = models.CharField(max_length=19)
+    sensor_model = models.CharField(max_length=99)
+    origin_country = models.CharField(max_length=99)
+    num_keys = models.IntegerField()
+    survey_frequency = models.IntegerField(help_text="Hz")
+    speed = models.IntegerField(help_text="IPS")
+    weight = models.IntegerField(help_text="mm")
+    warranty_period = models.IntegerField(help_text="month")
+
+
+class Headphones(models.Model):
+    title = models.CharField(max_length=999)
+    description = models.CharField(max_length=4999)
+    connect_type = models.CharField(max_length=19)
+    origin_country = models.CharField(max_length=99)
+    microphone = models.BooleanField()
+    max_reproducible_frequency = models.IntegerField(help_text="Hz")
+    min_reproducible_frequency = models.IntegerField(help_text="Hz")
+    warranty_period = models.IntegerField(help_text="month")
+    connector = models.CharField(max_length=99)
+    type = models.CharField(max_length=99, help_text="Headphones/speaker/microphone")
