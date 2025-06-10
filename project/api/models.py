@@ -268,3 +268,14 @@ class Products(models.Model):
     keyboard = models.ForeignKey(Keyboard, on_delete=models.CASCADE)
     mouse = models.ForeignKey(Mouse, on_delete=models.CASCADE)
     headphones = models.ForeignKey(Headphones, on_delete=models.CASCADE)
+
+
+class SavedPreset(models.Model):
+    processor = models.ForeignKey(Processor, on_delete=models.CASCADE, default=None)
+    graphic_card = models.ForeignKey(GraphicCard, on_delete=models.CASCADE, default=None)
+    motherboard = models.ForeignKey(Motherboard, on_delete=models.CASCADE, default=None)
+    disc = models.ForeignKey(Disc, on_delete=models.CASCADE, default=None)
+    fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
+    power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE, default=None)
+    case = models.ForeignKey(Case, on_delete=models.CASCADE, default=None)
+    cooler = models.ForeignKey(Cooler, on_delete=models.CASCADE, default=None)
