@@ -1,17 +1,17 @@
 from django.contrib import admin
-from . import models
+from .models import product_models
 
 
-admin.site.register(models.Processor)
-admin.site.register(models.SavedPreset)
-admin.site.register(models.Mouse)
-admin.site.register(models.Cooler)
-admin.site.register(models.Headphones)
-admin.site.register(models.Keyboard)
-admin.site.register(models.PowerUnit)
-admin.site.register(models.Motherboard)
-admin.site.register(models.Disc)
-admin.site.register(models.GraphicCard)
-admin.site.register(models.RAM)
-admin.site.register(models.Case)
-admin.site.register(models.Fan)
+admin.site.register(product_models.Processor)
+admin.site.register(product_models.SavedPreset)
+admin.site.register(product_models.Mouse)
+admin.site.register(product_models.Cooler)
+admin.site.register(product_models.Headphones)
+admin.site.register(product_models.Keyboard)
+admin.site.register(product_models.PowerUnit)
+admin.site.register(product_models.Motherboard)
+admin.site.register(product_models.Disc)
+admin.site.register(product_models.GraphicCard)
+admin.site.register(product_models.RAM)
+admin.site.register(product_models.Case)
+admin.site.register(product_models.Fan)

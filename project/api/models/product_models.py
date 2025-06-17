@@ -1,44 +1,4 @@
-from django.contrib.auth.hashers import make_password
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-
-
-class UserManager(BaseUserManager):
-    use_in_migrations = True
-
-    def _create_user(self, email, password, **extra_fields):
-        user = self.model(email=email, **extra_fields)
-        user.password = make_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, email=None, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email=None, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
-        return self._create_user(email, password, **extra_fields)
-
-
-class User(AbstractBaseUser, PermissionsMixin):
-    nik = models.CharField(max_length=99)
-    email = models.EmailField(unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["nik"]
 
 
 class Processor(models.Model):
@@ -63,6 +23,7 @@ class Processor(models.Model):
     graphic_core_name = models.CharField(max_length=99)
     pcie_version = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Motherboard(models.Model):
@@ -80,6 +41,7 @@ class Motherboard(models.Model):
     wifi = models.BooleanField()
     pcie_lines = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class RAM(models.Model):
@@ -92,6 +54,7 @@ class RAM(models.Model):
     volume = models.IntegerField()
     supply_voltage = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class GraphicCard(models.Model):
@@ -114,6 +77,7 @@ class GraphicCard(models.Model):
     num_lines_pcie = models.IntegerField()
     max_memory_bandwidth = models.FloatField(help_text="Gb/s")
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Disc(models.Model):
@@ -126,6 +90,7 @@ class Disc(models.Model):
     read_speed = models.IntegerField()
     write_speed = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Cooler(models.Model):
@@ -137,6 +102,7 @@ class Cooler(models.Model):
     sockets = models.CharField(max_length=499)
     height = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Case(models.Model):
@@ -154,6 +120,7 @@ class Case(models.Model):
     front_panel_interfaces = models.CharField(max_length=199)
     possibility_install_LCS = models.BooleanField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class PowerUnit(models.Model):
@@ -174,6 +141,7 @@ class PowerUnit(models.Model):
     sata_cable_length = models.IntegerField()
     molex_cable_length = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Fan(models.Model):
@@ -186,6 +154,7 @@ class Fan(models.Model):
     total_voltage = models.IntegerField()
     max_current = models.FloatField(help_text="mA")
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Monitor(models.Model):
@@ -210,6 +179,7 @@ class Monitor(models.Model):
     speakers = models.BooleanField()
     response_time = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Keyboard(models.Model):
@@ -226,6 +196,7 @@ class Keyboard(models.Model):
     total_num_keys = models.IntegerField()
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Mouse(models.Model):
@@ -239,6 +210,7 @@ class Mouse(models.Model):
     speed = models.IntegerField(help_text="IPS")
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
+    price = models.IntegerField()
 
 
 class Headphones(models.Model):
@@ -252,6 +224,7 @@ class Headphones(models.Model):
     warranty_period = models.IntegerField(help_text="month")
     connector = models.CharField(max_length=99)
     type = models.CharField(max_length=99, help_text="Headphones/speaker/microphone")
+    price = models.IntegerField()
 
 
 class Products(models.Model):
