@@ -1,4 +1,46 @@
+# Все модели приложения
+
 from django.db import models
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
+
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, **extra_fields):
+        user = self.model(email=email, **extra_fields)
+        user.password = make_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", False)
+        extra_fields.setdefault("is_superuser", False)
+        return self._create_user(email, password, **extra_fields)
+
+    def create_superuser(self, email=None, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self._create_user(email, password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    nik = models.CharField(max_length=99)
+    email = models.EmailField(unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    objects = UserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["nik"]
 
 
 class Processor(models.Model):
@@ -24,6 +66,7 @@ class Processor(models.Model):
     pcie_version = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Processor")
 
 
 class Motherboard(models.Model):
@@ -42,6 +85,7 @@ class Motherboard(models.Model):
     pcie_lines = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Motherboard")
 
 
 class RAM(models.Model):
@@ -55,6 +99,7 @@ class RAM(models.Model):
     supply_voltage = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="RAM")
 
 
 class GraphicCard(models.Model):
@@ -78,6 +123,7 @@ class GraphicCard(models.Model):
     max_memory_bandwidth = models.FloatField(help_text="Gb/s")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="GraphicCard")
 
 
 class Disc(models.Model):
@@ -91,6 +137,7 @@ class Disc(models.Model):
     write_speed = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Disc")
 
 
 class Cooler(models.Model):
@@ -103,6 +150,7 @@ class Cooler(models.Model):
     height = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Cooler")
 
 
 class Case(models.Model):
@@ -121,6 +169,7 @@ class Case(models.Model):
     possibility_install_LCS = models.BooleanField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Case")
 
 
 class PowerUnit(models.Model):
@@ -142,6 +191,7 @@ class PowerUnit(models.Model):
     molex_cable_length = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="PowerUnit")
 
 
 class Fan(models.Model):
@@ -155,6 +205,7 @@ class Fan(models.Model):
     max_current = models.FloatField(help_text="mA")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Fan")
 
 
 class Monitor(models.Model):
@@ -180,6 +231,7 @@ class Monitor(models.Model):
     response_time = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Monitor")
 
 
 class Keyboard(models.Model):
@@ -197,6 +249,7 @@ class Keyboard(models.Model):
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Keyboard")
 
 
 class Mouse(models.Model):
@@ -211,6 +264,7 @@ class Mouse(models.Model):
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Mouse")
 
 
 class Headphones(models.Model):
@@ -225,30 +279,69 @@ class Headphones(models.Model):
     connector = models.CharField(max_length=99)
     type = models.CharField(max_length=99, help_text="Headphones/speaker/microphone")
     price = models.IntegerField()
+    category = models.CharField(max_length=99, default="Headphones")
 
 
-class Products(models.Model):
-    processors = models.ForeignKey(Processor, on_delete=models.CASCADE)
-    graphic_cards = models.ForeignKey(GraphicCard, on_delete=models.CASCADE)
-    motherboards = models.ForeignKey(Motherboard, on_delete=models.CASCADE)
-    RAM = models.ForeignKey(RAM, on_delete=models.CASCADE)
-    discs = models.ForeignKey(Disc, on_delete=models.CASCADE)
-    coolers = models.ForeignKey(Cooler, on_delete=models.CASCADE)
-    cases = models.ForeignKey(Case, on_delete=models.CASCADE)
-    power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE)
-    fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
-    monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE)
-    keyboard = models.ForeignKey(Keyboard, on_delete=models.CASCADE)
-    mouse = models.ForeignKey(Mouse, on_delete=models.CASCADE)
-    headphones = models.ForeignKey(Headphones, on_delete=models.CASCADE)
+# модельки на будущее
+# после обязательно разделить модели вместе с вьюхами
+# class Products(models.Model):
+#     processors = models.ForeignKey(Processor, )
+#     graphic_cards = models.ForeignKey(GraphicCard, on_delete=models.CASCADE)
+#     motherboards = models.ForeignKey(Motherboard, on_delete=models.CASCADE)
+#     RAM = models.ForeignKey(RAM, on_delete=models.CASCADE)
+#     discs = models.ForeignKey(Disc, on_delete=models.CASCADE)
+#     coolers = models.ForeignKey(Cooler, on_delete=models.CASCADE)
+#     cases = models.ForeignKey(Case, on_delete=models.CASCADE)
+#     power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE)
+#     fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
+#     monitor = models.ForeignKey(Monitor, on_delete=models.CASCADE)
+#     keyboard = models.ForeignKey(Keyboard, on_delete=models.CASCADE)
+#     mouse = models.ForeignKey(Mouse, on_delete=models.CASCADE)
+#     headphones = models.ForeignKey(Headphones, on_delete=models.CASCADE)
 
 
-class SavedPreset(models.Model):
-    processor = models.ForeignKey(Processor, on_delete=models.CASCADE, default=None)
-    graphic_card = models.ForeignKey(GraphicCard, on_delete=models.CASCADE, default=None)
-    motherboard = models.ForeignKey(Motherboard, on_delete=models.CASCADE, default=None)
-    disc = models.ForeignKey(Disc, on_delete=models.CASCADE, default=None)
-    fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
-    power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE, default=None)
-    case = models.ForeignKey(Case, on_delete=models.CASCADE, default=None)
-    cooler = models.ForeignKey(Cooler, on_delete=models.CASCADE, default=None)
+# class SavedPreset(models.Model):
+#     processor = models.ForeignKey(Processor, on_delete=models.CASCADE, default=None)
+#     graphic_card = models.ForeignKey(GraphicCard, on_delete=models.CASCADE, default=None)
+#     motherboard = models.ForeignKey(Motherboard, on_delete=models.CASCADE, default=None)
+#     disc = models.ForeignKey(Disc, on_delete=models.CASCADE, default=None)
+#     fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
+#     power_unit = models.ForeignKey(PowerUnit, on_delete=models.CASCADE, default=None)
+#     case = models.ForeignKey(Case, on_delete=models.CASCADE, default=None)
+#     cooler = models.ForeignKey(Cooler, on_delete=models.CASCADE, default=None)
+#     category = models.CharField(max_length=99)
+
+
+class Cart(models.Model):
+    processors = models.ManyToManyField(Processor, null=True)
+    graphic_cards = models.ManyToManyField(GraphicCard, null=True)
+    motherboards = models.ManyToManyField(Motherboard, null=True)
+    RAM = models.ManyToManyField(RAM, null=True)
+    discs = models.ManyToManyField(Disc, null=True)
+    coolers = models.ManyToManyField(Cooler, null=True)
+    cases = models.ManyToManyField(Case, null=True)
+    power_unit = models.ManyToManyField(PowerUnit, null=True)
+    fan = models.ManyToManyField(Fan, null=True)
+    monitor = models.ManyToManyField(Monitor, null=True)
+    keyboard = models.ManyToManyField(Keyboard, null=True)
+    mouse = models.ManyToManyField(Mouse, null=True)
+    headphones = models.ManyToManyField(Headphones, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Order(models.Model):
+    processors = models.ManyToManyField(Processor, null=True)
+    graphic_cards = models.ManyToManyField(GraphicCard, null=True)
+    motherboards = models.ManyToManyField(Motherboard, null=True)
+    RAM = models.ManyToManyField(RAM, null=True)
+    discs = models.ManyToManyField(Disc, null=True)
+    coolers = models.ManyToManyField(Cooler, null=True)
+    cases = models.ManyToManyField(Case, null=True)
+    power_unit = models.ManyToManyField(PowerUnit, null=True)
+    fan = models.ManyToManyField(Fan, null=True)
+    monitor = models.ManyToManyField(Monitor, null=True)
+    keyboard = models.ManyToManyField(Keyboard, null=True)
+    mouse = models.ManyToManyField(Mouse, null=True)
+    headphones = models.ManyToManyField(Headphones, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_price = models.IntegerField(default=0)

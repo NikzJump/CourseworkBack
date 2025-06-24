@@ -1,14 +1,16 @@
+# сериализация всех моделей приложения
+
 from rest_framework import serializers
-from .models import product_models, user_models
+from . import models
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = user_models.User
+        model = models.User
         fields = "__all__"
 
     def create(self, validated_data):
-        user = user_models.User.objects.create(
+        user = models.User.objects.create(
             nik=validated_data["nik"],
             email=validated_data["email"]
         )
@@ -19,107 +21,119 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class ProcessorProdSerializer(serializers.Serializer):
+class ProcessorProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Processor
         fields = "__all__"
 
 
-class MotherboardProdSerializer(serializers.Serializer):
+class MotherboardProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Motherboard
         fields = "__all__"
 
 
-class RAMProdSerializer(serializers.Serializer):
+class RAMProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.RAM
         fields = "__all__"
 
 
-class GraphicCardProdSerializer(serializers.Serializer):
+class GraphicCardProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.GraphicCard
         fields = "__all__"
 
 
-class DiscProdSerializer(serializers.Serializer):
+class DiscProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Disc
         fields = "__all__"
 
 
-class CoolerProdSerializer(serializers.Serializer):
+class CoolerProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Cooler
         fields = "__all__"
 
 
-class CaseProdSerializer(serializers.Serializer):
+class CaseProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Case
         fields = "__all__"
 
 
-class PowerUnitProdSerializer(serializers.Serializer):
+class PowerUnitProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.PowerUnit
         fields = "__all__"
 
 
-class FanProdSerializer(serializers.Serializer):
+class FanProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Fan
         fields = "__all__"
 
 
-class MonitorProdSerializer(serializers.Serializer):
+class MonitorProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Monitor
         fields = "__all__"
 
 
-class KeyboardProdSerializer(serializers.Serializer):
+class KeyboardProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Keyboard
         fields = "__all__"
 
 
-class MouseProdSerializer(serializers.Serializer):
+class MouseProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
+        model = models.Mouse
         fields = "__all__"
 
 
-class HeadphonesProdSerializer(serializers.Serializer):
+class HeadphonesProdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = product_models.Processor
-        fields = "__all__"
-
-
-class ProductsSerializer(serializers.Serializer):
-    class Meta:
-        model = product_models.Processor
-        fields = "__all__"
-
-
-class SavedPresetsSerializer(serializers.Serializer):
-    class Meta:
-        model = product_models.Processor
+        model = models.Headphones
         fields = "__all__"
 
 
 class CartSerializer(serializers.ModelSerializer):
-    products = ProductsSerializer(many=True)
+    processors = ProcessorProdSerializer(many=True)
+    graphic_cards = GraphicCardProdSerializer(many=True)
+    motherboards = MotherboardProdSerializer(many=True)
+    RAM = RAMProdSerializer(many=True)
+    discs = DiscProdSerializer(many=True)
+    coolers = CoolerProdSerializer(many=True)
+    cases = CaseProdSerializer(many=True)
+    power_unit = PowerUnitProdSerializer(many=True)
+    fan = FanProdSerializer(many=True)
+    monitor = MonitorProdSerializer(many=True)
+    keyboard = KeyboardProdSerializer(many=True)
+    mouse = MouseProdSerializer(many=True)
+    headphones = HeadphonesProdSerializer(many=True)
 
     class Meta:
-        model = user_models.Cart
+        model = models.Cart
         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    products = ProductsSerializer(many=True)
+    processors = ProcessorProdSerializer(many=True)
+    graphic_cards = GraphicCardProdSerializer(many=True)
+    motherboards = MotherboardProdSerializer(many=True)
+    RAM = RAMProdSerializer(many=True)
+    discs = DiscProdSerializer(many=True)
+    coolers = CoolerProdSerializer(many=True)
+    cases = CaseProdSerializer(many=True)
+    power_unit = PowerUnitProdSerializer(many=True)
+    fan = FanProdSerializer(many=True)
+    monitor = MonitorProdSerializer(many=True)
+    keyboard = KeyboardProdSerializer(many=True)
+    mouse = MouseProdSerializer(many=True)
+    headphones = HeadphonesProdSerializer(many=True)
 
     class Meta:
-        model = user_models.Order
-        fields = ['id', 'order_price', 'products']
+        model = models.Order
+        fields = "__all__"
