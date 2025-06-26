@@ -66,7 +66,7 @@ class Processor(models.Model):
     pcie_version = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Processor")
+    category = models.IntegerField(max_length=99, default=1)
 
 
 class Motherboard(models.Model):
@@ -85,7 +85,7 @@ class Motherboard(models.Model):
     pcie_lines = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Motherboard")
+    category = models.IntegerField(max_length=99, default=2)
 
 
 class RAM(models.Model):
@@ -99,7 +99,7 @@ class RAM(models.Model):
     supply_voltage = models.FloatField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="RAM")
+    category = models.IntegerField(max_length=99, default=3)
 
 
 class GraphicCard(models.Model):
@@ -123,7 +123,7 @@ class GraphicCard(models.Model):
     max_memory_bandwidth = models.FloatField(help_text="Gb/s")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="GraphicCard")
+    category = models.IntegerField(max_length=99, default=4)
 
 
 class Disc(models.Model):
@@ -137,7 +137,7 @@ class Disc(models.Model):
     write_speed = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Disc")
+    category = models.IntegerField(max_length=99, default=5)
 
 
 class Cooler(models.Model):
@@ -150,7 +150,7 @@ class Cooler(models.Model):
     height = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Cooler")
+    category = models.IntegerField(max_length=99, default=6)
 
 
 class Case(models.Model):
@@ -169,7 +169,7 @@ class Case(models.Model):
     possibility_install_LCS = models.BooleanField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Case")
+    category = models.IntegerField(max_length=99, default=7)
 
 
 class PowerUnit(models.Model):
@@ -191,7 +191,7 @@ class PowerUnit(models.Model):
     molex_cable_length = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="PowerUnit")
+    category = models.IntegerField(max_length=99, default=8)
 
 
 class Fan(models.Model):
@@ -205,7 +205,7 @@ class Fan(models.Model):
     max_current = models.FloatField(help_text="mA")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Fan")
+    category = models.IntegerField(max_length=99, default=9)
 
 
 class Monitor(models.Model):
@@ -231,7 +231,7 @@ class Monitor(models.Model):
     response_time = models.IntegerField()
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Monitor")
+    category = models.IntegerField(max_length=99, default=10)
 
 
 class Keyboard(models.Model):
@@ -249,7 +249,7 @@ class Keyboard(models.Model):
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Keyboard")
+    category = models.IntegerField(max_length=99, default=11)
 
 
 class Mouse(models.Model):
@@ -264,7 +264,7 @@ class Mouse(models.Model):
     weight = models.IntegerField(help_text="mm")
     warranty_period = models.IntegerField(help_text="month")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Mouse")
+    category = models.IntegerField(max_length=99, default=12)
 
 
 class Headphones(models.Model):
@@ -279,7 +279,7 @@ class Headphones(models.Model):
     connector = models.CharField(max_length=99)
     type = models.CharField(max_length=99, help_text="Headphones/speaker/microphone")
     price = models.IntegerField()
-    category = models.CharField(max_length=99, default="Headphones")
+    category = models.IntegerField(max_length=99, default=13)
 
 
 # модельки на будущее

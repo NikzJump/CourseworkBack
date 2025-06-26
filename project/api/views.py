@@ -129,7 +129,7 @@ def add_cart(request, pk, category_id):
         case 11:
             product = models.Keyboard.objects.get(pk=pk)
         case 12:
-            product = models.Keyboard.objects.get(pk=pk)
+            product = models.Mouse.objects.get(pk=pk)
         case 13:
             product = models.Headphones.objects.get(pk=pk)
 
@@ -146,21 +146,21 @@ def add_cart(request, pk, category_id):
             case 5:
                 cart.discs.add(product)
             case 6:
-                cart.headphones.add(product)
+                cart.coolers.add(product)
             case 7:
-                cart.fan.add(product)
+                cart.cases.add(product)
             case 8:
                 cart.power_unit.add(product)
             case 9:
                 cart.fan.add(product)
             case 10:
-                cart.cases.add(product)
-            case 11:
-                cart.coolers.add(product)
-            case 12:
                 cart.monitor.add(product)
+            case 11:
+                cart.keyboard.add(product)
+            case 12:
+                cart.mouse.add(product)
             case 13:
-                cart.processors.add(product)
+                cart.headphones.add(product)
         return Response({'message': 'product added to cart', "code": 201})
 
     elif request.method == 'DELETE':
@@ -168,29 +168,29 @@ def add_cart(request, pk, category_id):
             case 1:
                 cart.processors.remove(product)
             case 2:
-                cart.discs.remove(product)
-            case 3:
                 cart.motherboards.remove(product)
+            case 3:
+                cart.RAM.remove(product)
             case 4:
                 cart.graphic_cards.remove(product)
             case 5:
-                cart.RAM.remove(product)
+                cart.discs.remove(product)
             case 6:
-                cart.headphones.remove(product)
+                cart.coolers.remove(product)
             case 7:
-                cart.fan.remove(product)
+                cart.cases.remove(product)
             case 8:
                 cart.power_unit.remove(product)
             case 9:
                 cart.fan.remove(product)
             case 10:
-                cart.cases.remove(product)
-            case 11:
-                cart.coolers.remove(product)
-            case 12:
                 cart.monitor.remove(product)
+            case 11:
+                cart.keyboard.remove(product)
+            case 12:
+                cart.mouse.remove(product)
             case 13:
-                cart.processors.remove(product)
+                cart.headphones.remove(product)
 
         return Response({'message': 'product removed from cart', "code": 200})
 
